@@ -1,0 +1,23 @@
+version: "3.0"
+services:
+  mongo:
+    image: mongo:4.4.6
+    ports:
+      - "27017:27017"
+    volumes:
+      - "./_mongo/data/db:/data/db"
+    restart: always
+
+  adminmongo:
+    image: mrvautin/adminmongo
+    links:
+      - mongo
+    environment:
+      - HOST=0.0.0.0
+      - CONN_NAME=data
+      - DB_HOST=mongo
+      - DB_PORT=27017
+    ports:
+      - "8765:1234"
+    restart: always
+    depends_on: mongo
